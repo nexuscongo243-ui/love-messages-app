@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Messages d'Amour</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-left h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: #b33951;
+            margin-bottom: 5px;
+        }
+
+        .header-left p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .admin-info {
+            text-align: right;
+        }
+
+        .admin-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .admin-status {
+            color: #27ae60;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dashboard-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-header i {
+            font-size: 1.8rem;
+            color: #b33951;
+        }
+
+        .card-header h2 {
+            color: #333;
+            font-size: 1.6rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #b33951;
+            box-shadow: 0 0 10px rgba(179, 57, 81, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(to right, #b33951, #ff7b9c);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(179, 57, 81, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+        }
+
+        .alert-error {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .stats-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #b33951;
+            font-size: 1.1rem;
+        }
+
+        .image-upload-box {
+            border: 3px dashed #ddd;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+
+        .image-upload-box:hover {
+            border-color: #b33951;
+            background-color: #fef0f3;
+        }
+
+        .image-upload-box i {
+            font-size: 2rem;
+            color: #b33951;
+            margin-bottom: 10px;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .messages-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .message-item {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff7b9c;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .message-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .message-content {
+            color: #444;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #b33951;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="header-left">
+                <h1>Dashboard Admin</h1>
+                <p>Créez des messages d'amour avec photos</p>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <div class="admin-name" id="admin-name">Administrateur</div>
+                    <div class="admin-status"><i class="fas fa-circle"></i> Connecté</div>
+                </div>
+                <button class="logout-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </div>
+
+        <!-- Alertes -->
+        <div class="alert alert-success" id="success-alert">
+            <i class="fas fa-check-circle"></i> <span id="alert-message">Message enregistré !</span>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="dashboard-content">
+            <!-- Créer un message -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-edit"></i>
+                    <h2>Créer un Message d'Amour</h2>
+                </div>
+                
+                <form id="message-form">
+                    <div class="form-group">
+                        <label class="form-label">Message d'amour :</label>
+                        <textarea id="message-input" class="form-textarea" placeholder="Écrivez ici votre message secret..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Mot de passe d'accès :</label>
+                        <input type="password" id="password-input" class="form-input" placeholder="Min 4 caractères" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nom du couple :</label>
+                        <input type="text" id="couple-name" class="form-input" placeholder="Ex: Sophie & Marc">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Photos (optionnel) :</label>
+                        <div class="image-upload-box" id="image-box-1">
+                            <i class="fas fa-image"></i>
+                            <p>Photo 1</p>
+                            <input type="file" id="image-1" accept="image/*" style="display: none;">
+                            <img id="preview-1" class="image-preview" style="display: none;">
+                        </div>
+                        <div class="image-upload-box" id="image-box-2" style="margin-top: 10px;">
+                            <i class="fas fa-image"></i>
+                            <p>Photo 2</p>
+                            <input type="file" id="image-2" accept="image/*" style="display: none;">
+                            <img id="preview-2" class="image-preview" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn" id="save-btn">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                </form>
+            </div>
+
+            <!-- Statistiques -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <h2>Statistiques</h2>
+                </div>
+                
+                <div class="stats-box">
+                    <div class="stat-item">
+                        <span class="stat-label">Messages créés :</span>
+                        <span class="stat-value" id="stat-total">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Vues totales :</span>
+                        <span class="stat-value" id="stat-views">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avec photos :</span>
+                        <span class="stat-value" id="stat-photos">0</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <h3 style="margin-bottom: 15px;">Vos messages</h3>
+                    <div class="messages-list" id="messages-list">
+                        <div class="loading"><div class="spinner"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        let authToken = localStorage.getItem('authToken');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier authentification
+            if (!authToken) {
+                window.location.href = 'admin-login.html';
+                return;
+            }
+
+            // Afficher username
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('admin-name').textContent = username;
+            }
+
+            // Charger données
+            loadStats();
+            loadMessages();
+
+            // Upload images
+            for (let i = 1; i <= 2; i++) {
+                const box = document.getElementById(`image-box-${i}`);
+                const input = document.getElementById(`image-${i}`);
+                const preview = document.getElementById(`preview-${i}`);
+
+                box.addEventListener('click', () => input.click());
+                input.addEventListener('change', (e) => {
+                    if (e.target.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            preview.src = event.target.result;
+                            preview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(e.target.files[0]);
+                    }
+                });
+            }
+
+            // Soumettre le formulaire
+            document.getElementById('message-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const message = document.getElementById('message-input').value.trim();
+                const password = document.getElementById('password-input').value;
+                const coupleName = document.getElementById('couple-name').value;
+                const saveBtn = document.getElementById('save-btn');
+
+                if (!message || !password) {
+                    showAlert('Veuillez remplir tous les champs requis', 'error');
+                    return;
+                }
+
+                if (password.length < 4) {
+                    showAlert('Le mot de passe doit contenir au moins 4 caractères', 'error');
+                    return;
+                }
+
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+
+                try {
+                    const formData = new FormData();
+                    formData.append('message', message);
+                    formData.append('password', password);
+                    formData.append('coupleName', coupleName);
+
+                    const file1 = document.getElementById('image-1').files[0];
+                    const file2 = document.getElementById('image-2').files[0];
+                    if (file1) formData.append('images', file1);
+                    if (file2) formData.append('images', file2);
+
+                    const response = await fetch(`${API_URL}/messages`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${authToken}` },
+                        body: formData
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erreur de sauvegarde');
+                    }
+
+                    showAlert('Message créé avec succès !', 'success');
+
+                    // Réinitialiser formulaire
+                    document.getElementById('message-form').reset();
+                    document.getElementById('preview-1').style.display = 'none';
+                    document.getElementById('preview-2').style.display = 'none';
+
+                    // Rafraîchir données
+                    loadStats();
+                    loadMessages();
+
+                } catch (error) {
+                    showAlert(error.message, 'error');
+                } finally {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="fas fa-save"></i> Enregistrer';
+                }
+            });
+
+            // Déconnexion
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                try {
+                    await fetch(`${API_URL}/auth/logout`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                } catch (e) {}
+
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('username');
+                window.location.href = 'admin-login.html';
+            });
+        });
+
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_URL}/stats`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (!response.ok) throw new Error('Erreur chargement stats');
+
+                const data = await response.json();
+                document.getElementById('stat-total').textContent = data.total_messages || 0;
+                document.getElementById('stat-views').textContent = data.total_views || 0;
+                document.getElementById('stat-photos').textContent = data.messages_with_photos || 0;
+
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+
+        async function loadMessages() {
+            try {
+                const response = await fetch(`${API_URL}/messages`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (!response.ok) throw new Error('Erreur chargement messages');
+
+                const messages = await response.json();
+                const list = document.getElementById('messages-list');
+
+                if (messages.length === 0) {
+                    list.innerHTML = '<p style="text-align: center; color: #999;">Aucun message créé</p>';
+                    return;
+                }
+
+                list.innerHTML = messages.reverse().map(msg => `
+                    <div class="message-item">
+                        <div class="message-meta">
+                            <span><i class="far fa-calendar"></i> ${new Date(msg.created_at).toLocaleDateString('fr-FR')}</span>
+                            <span><i class="far fa-eye"></i> ${msg.views} vue(s)</span>
+                        </div>
+                        <div class="message-content">${msg.message_text.substring(0, 100)}...</div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Erreur:', error);
+            }
+        }
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('success-alert');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

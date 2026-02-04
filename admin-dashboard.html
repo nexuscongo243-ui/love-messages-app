@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Messages d'Amour</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-left h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.8rem;
+            color: #b33951;
+            margin-bottom: 5px;
+        }
+
+        .header-left p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .admin-info {
+            text-align: right;
+        }
+
+        .admin-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .admin-status {
+            color: #27ae60;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Main Content */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .dashboard-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-header i {
+            font-size: 1.8rem;
+            color: #b33951;
+        }
+
+        .card-header h2 {
+            color: #333;
+            font-size: 1.6rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #b33951;
+            box-shadow: 0 0 10px rgba(179, 57, 81, 0.2);
+        }
+
+        .password-note {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Image Upload */
+        .image-upload-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .image-upload-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .image-upload-box {
+            border: 3px dashed #ddd;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-upload-box:hover {
+            border-color: #b33951;
+            background-color: #fef0f3;
+        }
+
+        .image-upload-box i {
+            font-size: 3rem;
+            color: #b33951;
+            margin-bottom: 15px;
+        }
+
+        .image-upload-box p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(to right, #b33951, #ff7b9c);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(179, 57, 81, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, #3498db, #2980b9);
+        }
+
+        /* Preview & Stats */
+        .message-preview {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid #b33951;
+        }
+
+        .message-preview h3 {
+            color: #b33951;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #message-preview-content {
+            line-height: 1.6;
+            color: #444;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+
+        .image-preview-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .preview-heart-frame {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            border: 5px solid #ff7b9c;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: rotate(-15deg);
+        }
+
+        .preview-heart-frame:nth-child(2) {
+            transform: rotate(15deg);
+        }
+
+        .preview-heart-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: rotate(15deg);
+        }
+
+        .preview-heart-frame:nth-child(2) img {
+            transform: rotate(-15deg);
+        }
+
+        .preview-heart-frame:before {
+            content: '❤️';
+            position: absolute;
+            top: -15px;
+            font-size: 2rem;
+            z-index: 2;
+        }
+
+        .stats-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #b33951;
+            font-size: 1.1rem;
+        }
+
+        /* Share Section */
+        .share-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+        }
+
+        .share-box {
+            background-color: #e8f4fc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .share-box h3 {
+            color: #2980b9;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .share-link {
+            background-color: white;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            word-break: break-all;
+            margin-top: 10px;
+            color: #2c3e50;
+        }
+
+        /* Messages List */
+        .messages-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .message-item {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff7b9c;
+            transition: all 0.3s;
+        }
+
+        .message-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .message-content {
+            color: #444;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+        }
+
+        .alert-error {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+        }
+
+        /* Hearts Background */
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 123, 156, 0.05);
+            font-size: 1.5rem;
+            animation: float 10s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.1;
+            }
+            90% {
+                opacity: 0.1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="header-left">
+                <h1>Dashboard Admin</h1>
+                <p>Créez des messages d'amour avec photos</p>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <div class="admin-name" id="admin-name">Administrateur</div>
+                    <div class="admin-status"><i class="fas fa-circle"></i> Connecté</div>
+                </div>
+                <button class="logout-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="alert alert-success" id="success-alert">
+            <i class="fas fa-check-circle"></i> Message enregistré avec succès !
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <!-- Left Column: Create Message -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-edit"></i>
+                    <h2>Créer un Message d'Amour</h2>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Message d'amour :</label>
+                    <textarea id="message-input" class="form-textarea" placeholder="Écrivez ici votre message secret d'amour..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mot de passe d'accès :</label>
+                    <input type="password" id="password-input" class="form-input" placeholder="Choisissez un mot de passe">
+                    <p class="password-note">Ce mot de passe sera demandé pour voir le message</p>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Nom du couple :</label>
+                    <input type="text" id="couple-name" class="form-input" placeholder="Ex: Sophie & Marc">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Ajouter des photos (optionnel) :</label>
+                    <p class="password-note">Ajoutez jusqu'à 2 photos qui apparaîtront dans des cadres en forme de cœur</p>
+                    
+                    <div class="image-upload-container">
+                        <!-- Photo gauche -->
+                        <div class="image-upload-box" id="image-box-left">
+                            <i class="fas fa-heart"></i>
+                            <p>Photo gauche</p>
+                            <span class="image-info">Cliquez pour ajouter une photo</span>
+                            <img id="image-preview-left" class="image-preview" alt="Aperçu photo gauche">
+                            <input type="file" id="image-input-left" accept="image/*" style="display: none;">
+                            <button type="button" class="remove-image-btn" id="remove-left-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Photo droite -->
+                        <div class="image-upload-box" id="image-box-right">
+                            <i class="fas fa-heart"></i>
+                            <p>Photo droite</p>
+                            <span class="image-info">Cliquez pour ajouter une photo</span>
+                            <img id="image-preview-right" class="image-preview" alt="Aperçu photo droite">
+                            <input type="file" id="image-input-right" accept="image/*" style="display: none;">
+                            <button type="button" class="remove-image-btn" id="remove-right-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="save-message-btn" class="btn">
+                    <i class="fas fa-lock"></i> Enregistrer le Message
+                </button>
+                
+                <div class="message-preview">
+                    <h3><i class="fas fa-eye"></i> Aperçu :</h3>
+                    <div id="message-preview-content">
+                        Votre message apparaîtra ici...
+                    </div>
+                    
+                    <div class="image-preview-container" id="image-preview-container">
+                        <!-- Les aperçus de photos apparaîtront ici -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Stats & Share -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i>
+                    <h2>Statistiques & Partage</h2>
+                </div>
+                
+                <div class="stats-box">
+                    <div class="stat-item">
+                        <span class="stat-label">Messages créés :</span>
+                        <span class="stat-value" id="messages-count">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Dernière modification :</span>
+                        <span class="stat-value" id="last-modified">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Messages avec photos :</span>
+                        <span class="stat-value" id="with-photos">0</span>
+                    </div>
+                </div>
+                
+                <div class="share-section">
+                    <h3>Partagez ce message</h3>
+                    <div class="share-box">
+                        <h3><i class="fas fa-link"></i> Lien à partager :</h3>
+                        <div class="share-link" id="share-link">
+                            https://votresite.com/message-public.html
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button id="copy-link-btn" class="btn btn-secondary">
+                                <i class="fas fa-copy"></i> Copier le lien
+                            </button>
+                            <button id="test-link-btn" class="btn btn-success">
+                                <i class="fas fa-external-link-alt"></i> Tester le lien
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="messages-list" id="messages-list">
+                    <!-- Messages will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hearts-container" id="hearts-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier la session admin
+            if (!checkAdminSession()) {
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // Créer des cœurs flottants en arrière-plan
+            createFloatingHearts();
+            
+            // Éléments DOM
+            const messageInput = document.getElementById('message-input');
+            const passwordInput = document.getElementById('password-input');
+            const coupleNameInput = document.getElementById('couple-name');
+            const saveMessageBtn = document.getElementById('save-message-btn');
+            const messagePreview = document.getElementById('message-preview-content');
+            const imagePreviewContainer = document.getElementById('image-preview-container');
+            const successAlert = document.getElementById('success-alert');
+            const messagesCount = document.getElementById('messages-count');
+            const lastModified = document.getElementById('last-modified');
+            const withPhotos = document.getElementById('with-photos');
+            const shareLink = document.getElementById('share-link');
+            const copyLinkBtn = document.getElementById('copy-link-btn');
+            const testLinkBtn = document.getElementById('test-link-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const messagesList = document.getElementById('messages-list');
+            const adminName = document.getElementById('admin-name');
+            
+            // Éléments pour les images
+            const imageBoxLeft = document.getElementById('image-box-left');
+            const imageBoxRight = document.getElementById('image-box-right');
+            const imageInputLeft = document.getElementById('image-input-left');
+            const imageInputRight = document.getElementById('image-input-right');
+            const imagePreviewLeft = document.getElementById('image-preview-left');
+            const imagePreviewRight = document.getElementById('image-preview-right');
+            const removeLeftBtn = document.getElementById('remove-left-btn');
+            const removeRightBtn = document.getElementById('remove-right-btn');
+            
+            let leftImageData = null;
+            let rightImageData = null;
+            
+            // Récupérer le nom d'admin depuis la session
+            const sessionData = JSON.parse(localStorage.getItem('adminSession'));
+            if (sessionData && sessionData.username) {
+                adminName.textContent = sessionData.username;
+            }
+            
+            // Aperçu du message en temps réel
+            messageInput.addEventListener('input', updateMessagePreview);
+            
+            // Gestion des images
+            imageBoxLeft.addEventListener('click', () => imageInputLeft.click());
+            imageBoxRight.addEventListener('click', () => imageInputRight.click());
+            
+            imageInputLeft.addEventListener('change', (e) => handleImageUpload(e, 'left'));
+            imageInputRight.addEventListener('change', (e) => handleImageUpload(e, 'right'));
+            
+            removeLeftBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeImage('left');
+            });
+            
+            removeRightBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeImage('right');
+            });
+            
+            // Fonction pour gérer l'upload d'image
+            function handleImageUpload(event, side) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                // Vérifier la taille (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showErrorAlert('L\'image est trop volumineuse (max 5MB)');
+                    return;
+                }
+                
+                // Vérifier le type
+                if (!file.type.startsWith('image/')) {
+                    showErrorAlert('Veuillez sélectionner une image');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    
+                    if (side === 'left') {
+                        leftImageData = imageData;
+                        imagePreviewLeft.src = imageData;
+                        imagePreviewLeft.style.display = 'block';
+                        removeLeftBtn.style.display = 'block';
+                        document.querySelector('#image-box-left .image-info').style.display = 'none';
+                    } else {
+                        rightImageData = imageData;
+                        imagePreviewRight.src = imageData;
+                        imagePreviewRight.style.display = 'block';
+                        removeRightBtn.style.display = 'block';
+                        document.querySelector('#image-box-right .image-info').style.display = 'none';
+                    }
+                    
+                    updateImagePreview();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // Supprimer une image
+            function removeImage(side) {
+                if (side === 'left') {
+                    leftImageData = null;
+                    imagePreviewLeft.src = '';
+                    imagePreviewLeft.style.display = 'none';
+                    removeLeftBtn.style.display = 'none';
+                    imageInputLeft.value = '';
+                    document.querySelector('#image-box-left .image-info').style.display = 'block';
+                } else {
+                    rightImageData = null;
+                    imagePreviewRight.src = '';
+                    imagePreviewRight.style.display = 'none';
+                    removeRightBtn.style.display = 'none';
+                    imageInputRight.value = '';
+                    document.querySelector('#image-box-right .image-info').style.display = 'block';
+                }
+                
+                updateImagePreview();
+            }
+            
+            // Mettre à jour l'aperçu des images
+            function updateImagePreview() {
+                imagePreviewContainer.innerHTML = '';
+                
+                if (leftImageData) {
+                    const leftFrame = document.createElement('div');
+                    leftFrame.className = 'preview-heart-frame';
+                    const leftImg = document.createElement('img');
+                    leftImg.src = leftImageData;
+                    leftImg.alt = 'Photo gauche';
+                    leftFrame.appendChild(leftImg);
+                    imagePreviewContainer.appendChild(leftFrame);
+                }
+                
+                if (rightImageData) {
+                    const rightFrame = document.createElement('div');
+                    rightFrame.className = 'preview-heart-frame';
+                    const rightImg = document.createElement('img');
+                    rightImg.src = rightImageData;
+                    rightImg.alt = 'Photo droite';
+                    rightFrame.appendChild(rightImg);
+                    imagePreviewContainer.appendChild(rightFrame);
+                }
+            }
+            
+            // Mettre à jour l'aperçu du message
+            function updateMessagePreview() {
+                if (messageInput.value.trim() === '') {
+                    messagePreview.textContent = 'Votre message apparaîtra ici...';
+                } else {
+                    messagePreview.textContent = messageInput.value;
+                }
+            }
+            
+            // Charger les données existantes
+            loadMessagesData();
+            
+            // Enregistrer un nouveau message
+            saveMessageBtn.addEventListener('click', function() {
+                const message = messageInput.value.trim();
+                const password = passwordInput.value;
+                const coupleName = coupleNameInput.value.trim();
+                
+                // Validation
+                if (message === '') {
+                    showErrorAlert('Veuillez entrer un message !');
+                    messageInput.focus();
+                    return;
+                }
+                
+                if (password === '') {
+                    showErrorAlert('Veuillez définir un mot de passe !');
+                    passwordInput.focus();
+                    return;
+                }
+                
+                if (password.length < 4) {
+                    showErrorAlert('Le mot de passe doit contenir au moins 4 caractères');
+                    passwordInput.focus();
+                    return;
+                }
+                
+                // Créer l'objet message avec images
+                const messageData = {
+                    id: Date.now(),
+                    message: message,
+                    password: password,
+                    coupleName: coupleName || 'Anonyme',
+                    leftImage: leftImageData,
+                    rightImage: rightImageData,
+                    createdAt: new Date().toISOString(),
+                    views: 0
+                };
+                
+                // Récupérer les messages existants
+                let messages = JSON.parse(localStorage.getItem('loveMessages') || '[]');
+                
+                // Ajouter le nouveau message
+                messages.push(messageData);
+                
+                // Limiter à 50 messages maximum
+                if (messages.length > 50) {
+                    messages = messages.slice(-50);
+                }
+                
+                // Sauvegarder
+                localStorage.setItem('loveMessages', JSON.stringify(messages));
+                localStorage.setItem('lastMessageUpdate', Date.now());
+                
+                // Mettre à jour l'interface
+                updateStats();
+                loadMessagesList();
+                
+                // Afficher le message de succès
+                showSuccessAlert('Message enregistré avec succès !');
+                
+                // Animation du bouton
+                this.innerHTML = '<i class="fas fa-check"></i> Message Enregistré !';
+                this.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-lock"></i> Enregistrer le Message';
+                    this.classList.remove('btn-success');
+                }, 2000);
+                
+                // Effacer les champs
+                messageInput.value = '';
+                passwordInput.value = '';
+                coupleNameInput.value = '';
+                removeImage('left');
+                removeImage('right');
+                updateMessagePreview();
+                
+                // Mettre à jour le lien de partage
+                updateShareLink(messageData.id);
+            });
+            
+            // Copier le lien
+            copyLinkBtn.addEventListener('click', function() {
+                const linkText = shareLink.textContent;
+                
+                navigator.clipboard.writeText(linkText).then(() => {
+                    // Feedback visuel
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Lien Copié !';
+                    this.classList.add('btn-success');
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.classList.remove('btn-success');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Erreur lors de la copie : ', err);
+                    showErrorAlert('Impossible de copier le lien. Copiez-le manuellement.');
+                });
+            });
+            
+            // Tester le lien
+            testLinkBtn.addEventListener('click', function() {
+                const link = shareLink.textContent;
+                if (link && link !== 'https://votresite.com/message-public.html') {
+                    window.open(link, '_blank');
+                } else {
+                    showErrorAlert('Créez d\'abord un message pour générer un lien');
+                }
+            });
+            
+            // Déconnexion
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'admin-login.html';
+            });
+            
+            // Fonctions utilitaires
+            function loadMessagesData() {
+                updateStats();
+                loadMessagesList();
+                
+                // Vérifier s'il y a un message récent
+                const messages = JSON.parse(localStorage.getItem('loveMessages') || '[]');
+                if (messages.length > 0) {
+                    const lastMessage = messages[messages.length - 1];
+                    updateShareLink(lastMessage.id);
+                }
+            }
+            
+            function updateStats() {
+                const messages = JSON.parse(localStorage.getItem('loveMessages') || '[]');
+                const lastUpdate = localStorage.getItem('lastMessageUpdate');
+                
+                messagesCount.textContent = messages.length;
+                
+                // Compter les messages avec photos
+                const withPhotosCount = messages.filter(msg => msg.leftImage || msg.rightImage).length;
+                withPhotos.textContent = withPhotosCount;
+                
+                if (lastUpdate) {
+                    const date = new Date(parseInt(lastUpdate));
+                    lastModified.textContent = date.toLocaleDateString('fr-FR') + ' ' + date.toLocaleTimeString('fr-FR');
+                }
+            }
+            
+            function loadMessagesList() {
+                const messages = JSON.parse(localStorage.getItem('loveMessages') || '[]');
+                messagesList.innerHTML = '';
+                
+                if (messages.length === 0) {
+                    messagesList.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Aucun message créé</div>';
+                    return;
+                }
+                
+                // Afficher les 10 derniers messages
+                const recentMessages = messages.slice(-10).reverse();
+                
+                recentMessages.forEach(msg => {
+                    const messageItem = document.createElement('div');
+                    messageItem.className = 'message-item';
+                    
+                    const shortMessage = msg.message.length > 100 
+                        ? msg.message.substring(0, 100) + '...' 
+                        : msg.message;
+                    
+                    const hasPhotos = msg.leftImage || msg.rightImage;
+                    
+                    messageItem.innerHTML = `
+                        <div class="message-meta">
+                            <span><i class="far fa-calendar"></i> ${formatDate(msg.createdAt)}</span>
+                            <span>
+                                <i class="far fa-eye"></i> ${msg.views} vue(s)
+                                ${hasPhotos ? '<i class="fas fa-camera" style="margin-left: 10px;"></i>' : ''}
+                            </span>
+                        </div>
+                        <div class="message-content">${shortMessage}</div>
+                    `;
+                    
+                    messageItem.addEventListener('click', () => {
+                        // Pré-remplir le formulaire avec ce message
+                        messageInput.value = msg.message;
+                        passwordInput.value = msg.password;
+                        coupleNameInput.value = msg.coupleName;
+                        
+                        // Charger les images si elles existent
+                        if (msg.leftImage) {
+                            leftImageData = msg.leftImage;
+                            imagePreviewLeft.src = msg.leftImage;
+                            imagePreviewLeft.style.display = 'block';
+                            removeLeftBtn.style.display = 'block';
+                            document.querySelector('#image-box-left .image-info').style.display = 'none';
+                        }
+                        
+                        if (msg.rightImage) {
+                            rightImageData = msg.rightImage;
+                            imagePreviewRight.src = msg.rightImage;
+                            imagePreviewRight.style.display = 'block';
+                            removeRightBtn.style.display = 'block';
+                            document.querySelector('#image-box-right .image-info').style.display = 'none';
+                        }
+                        
+                        updateMessagePreview();
+                        updateImagePreview();
+                        
+                        // Scroll vers le formulaire
+                        document.querySelector('#message-input').scrollIntoView({ behavior: 'smooth' });
+                    });
+                    
+                    messagesList.appendChild(messageItem);
+                });
+            }
+            
+            function updateShareLink(messageId) {
+                const currentUrl = window.location.href;
+                const publicPageUrl = currentUrl.replace('admin-dashboard.html', 'message-public.html') + '?id=' + messageId;
+                shareLink.textContent = publicPageUrl;
+            }
+            
+            function formatDate(isoString) {
+                const date = new Date(isoString);
+                return date.toLocaleDateString('fr-FR', { 
+                    day: '2-digit', 
+                    month: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            
+            function showSuccessAlert(message) {
+                successAlert.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                successAlert.style.display = 'block';
+                
+                setTimeout(() => {
+                    successAlert.style.display = 'none';
+                }, 3000);
+            }
+            
+            function showErrorAlert(message) {
+                // Créer une alerte d'erreur temporaire
+                const errorAlert = document.createElement('div');
+                errorAlert.className = 'alert alert-error';
+                errorAlert.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+                errorAlert.style.display = 'block';
+                
+                document.querySelector('.dashboard-content').prepend(errorAlert);
+                
+                setTimeout(() => {
+                    errorAlert.remove();
+                }, 3000);
+            }
+            
+            function createFloatingHearts(count = 15) {
+                const container = document.getElementById('hearts-container');
+                container.innerHTML = '';
+                
+                for (let i = 0; i < count; i++) {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '<i class="fas fa-heart"></i>';
+                    heart.classList.add('heart');
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    
+                    container.appendChild(heart);
+                }
+            }
+            
+            function checkAdminSession() {
+                const sessionData = localStorage.getItem('adminSession');
+                
+                if (!sessionData) return false;
+                
+                const session = JSON.parse(sessionData);
+                const sessionAge = Date.now() - session.timestamp;
+                const sessionMaxAge = 2 * 60 * 60 * 1000; // 2 heures
+                
+                if (sessionAge < sessionMaxAge) {
+                    // Rafraîchir le timestamp
+                    session.timestamp = Date.now();
+                    localStorage.setItem('adminSession', JSON.stringify(session));
+                    return true;
+                } else {
+                    // Session expirée
+                    localStorage.removeItem('adminSession');
+                    return false;
+                }
+            }
+            
+            // Vérifier périodiquement la session
+            setInterval(() => {
+                if (!checkAdminSession()) {
+                    window.location.href = 'admin-login.html';
+                }
+            }, 60000); // Toutes les minutes
+            
+            // Exemple de message par défaut
+            if (!localStorage.getItem('loveMessages')) {
+                messageInput.value = "Mon amour, en ce jour de la Saint-Valentin, je tenais à te dire à quel point tu comptes pour moi. Chaque moment à tes côtés est un trésor que je chéris profondément. Je t'aime plus que les mots ne peuvent l'exprimer. Joyeuse Saint-Valentin !";
+                updateMessagePreview();
+            }
+        });
+    </script>
+</body>
+</html>

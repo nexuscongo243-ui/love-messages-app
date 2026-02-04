@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Admin - Message d'Amour</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="Connexion sécurisée pour les administrateurs">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .login-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-top: 8px solid #b33951;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 4rem;
+            color: #b33951;
+            margin-bottom: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #b33951;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(179, 57, 81, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(to right, #b33951, #ff7b9c);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(179, 57, 81, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+            min-height: 24px;
+        }
+
+        .success-message {
+            color: #27ae60;
+            margin-top: 15px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .admin-instructions {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: left;
+        }
+
+        .admin-instructions h3 {
+            color: #b33951;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .admin-instructions ul {
+            padding-left: 20px;
+        }
+
+        .admin-instructions li {
+            margin-bottom: 8px;
+        }
+
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 123, 156, 0.1);
+            font-size: 1.5rem;
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 40px 30px;
+            }
+            
+            .logo i {
+                font-size: 3.5rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+            
+            .logo i {
+                font-size: 3rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+                <h1>Admin Connexion</h1>
+                <p>Tableau de bord des messages d'amour</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label">Nom d'utilisateur :</label>
+                    <input type="text" id="username" class="form-input" placeholder="Entrez votre nom d'utilisateur" required autocomplete="off">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mot de passe :</label>
+                    <input type="password" id="password" class="form-input" placeholder="Entrez votre mot de passe" required autocomplete="off">
+                </div>
+                
+                <button type="submit" class="login-btn" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Se Connecter
+                </button>
+                
+                <div id="error-message" class="error-message"></div>
+                <div id="success-message" class="success-message"></div>
+            </form>
+            
+            <div class="admin-instructions">
+                <h3><i class="fas fa-info-circle"></i> Connexion Sécurisée :</h3>
+                <ul>
+                    <li>🔒 Connexion authentifiée par JWT</li>
+                    <li>🛡️ Tous les mots de passe sont chiffrés</li>
+                    <li>📊 Dashboard sécurisé pour gérer les messages</li>
+                    <li>🔑 Changement de mot de passe disponible</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="hearts-container" id="hearts-container"></div>
+
+    <script>
+        const API_URL = '/api';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingHearts();
+            
+            const loginForm = document.getElementById('login-form');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            const loginBtn = document.getElementById('login-btn');
+            
+            // Vérifier si déjà connecté
+            checkExistingSession();
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                
+                if (!username || !password) {
+                    showError('Veuillez remplir tous les champs');
+                    return;
+                }
+                
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...';
+                
+                try {
+                    const response = await fetch(`${API_URL}/auth/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, password })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        showError(data.error || 'Erreur de connexion');
+                        loginBtn.disabled = false;
+                        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se Connecter';
+                        passwordInput.value = '';
+                        return;
+                    }
+                    
+                    // Sauvegarder le token
+                    localStorage.setItem('authToken', data.token);
+                    localStorage.setItem('username', data.username);
+                    
+                    showSuccess('Connexion réussie !');
+                    
+                    loginBtn.innerHTML = '<i class="fas fa-check"></i> Redirection...';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 800);
+                    
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    showError('Erreur de connexion au serveur');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se Connecter';
+                }
+            });
+            
+            function createFloatingHearts(count = 10) {
+                const container = document.getElementById('hearts-container');
+                container.innerHTML = '';
+                
+                for (let i = 0; i < count; i++) {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '<i class="fas fa-heart"></i>';
+                    heart.classList.add('heart');
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    container.appendChild(heart);
+                }
+            }
+            
+            function showError(text) {
+                errorMessage.textContent = text;
+                errorMessage.style.opacity = '1';
+                setTimeout(() => {
+                    errorMessage.style.opacity = '0';
+                }, 4000);
+            }
+            
+            function showSuccess(text) {
+                successMessage.textContent = text;
+                successMessage.style.opacity = '1';
+            }
+            
+            function checkExistingSession() {
+                const token = localStorage.getItem('authToken');
+                if (token) {
+                    // Vérifier que le token est valide en appelant une route protégée
+                    fetch(`${API_URL}/stats`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                    .then(r => {
+                        if (r.ok) {
+                            window.location.href = 'admin-dashboard.html';
+                        } else {
+                            localStorage.removeItem('authToken');
+                            localStorage.removeItem('username');
+                        }
+                    })
+                    .catch(() => {
+                        localStorage.removeItem('authToken');
+                    });
+                }
+            }
+            
+            usernameInput.focus();
+        });
+    </script>
+</body>
+</html>

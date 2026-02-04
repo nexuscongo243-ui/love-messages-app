@@ -1,0 +1,49 @@
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Base de données
+database.sqlite
+*.db
+
+# Uploads
+public/uploads/
+!public/uploads/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Cache
+.cache/
+dist/
+
+# Docker
+.dockerignore
+
+# SSL
+ssl/
+*.pem
+*.crt
+*.key
+
+# Temporary
+tmp/
+temp/
+*.tmp

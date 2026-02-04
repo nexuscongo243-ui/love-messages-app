@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Admin - Message d'Amour</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .login-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border-top: 8px solid #b33951;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo i {
+            font-size: 4rem;
+            color: #b33951;
+            margin-bottom: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #b33951;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(179, 57, 81, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(to right, #b33951, #ff7b9c);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(179, 57, 81, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+            min-height: 24px;
+        }
+
+        .admin-instructions {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: left;
+        }
+
+        .admin-instructions h3 {
+            color: #b33951;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .admin-instructions ul {
+            padding-left: 20px;
+        }
+
+        .admin-instructions li {
+            margin-bottom: 8px;
+        }
+
+        .hearts-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 123, 156, 0.1);
+            font-size: 1.5rem;
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 40px 30px;
+            }
+            
+            .logo i {
+                font-size: 3.5rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+            
+            .logo i {
+                font-size: 3rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <i class="fas fa-lock"></i>
+                <h1>Admin Connexion</h1>
+                <p>Tableau de bord des messages d'amour</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label">Nom d'utilisateur :</label>
+                    <input type="text" id="username" class="form-input" placeholder="Entrez votre nom d'utilisateur" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mot de passe :</label>
+                    <input type="password" id="password" class="form-input" placeholder="Entrez votre mot de passe" required>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Se Connecter
+                </button>
+                
+                <div id="error-message" class="error-message"></div>
+            </form>
+            
+            <div class="admin-instructions">
+                <h3><i class="fas fa-info-circle"></i> Instructions :</h3>
+                <ul>
+                    <li>Cette page est réservée aux administrateurs du site</li>
+                    <li>Après connexion, vous pourrez créer des messages secrets</li>
+                    <li>Les utilisateurs verront uniquement la page publique</li>
+                    <li>Pour réinitialiser les identifiants, contactez le développeur</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="hearts-container" id="hearts-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Créer des cœurs flottants en arrière-plan
+            createFloatingHearts();
+            
+            // Identifiants admin (à changer lors du déploiement !)
+            const ADMIN_USERNAME = "admin";
+            const ADMIN_PASSWORD = "SaintValentin2024";
+            
+            // Éléments DOM
+            const loginForm = document.getElementById('login-form');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Fonction pour créer des cœurs flottants
+            function createFloatingHearts(count = 10) {
+                const container = document.getElementById('hearts-container');
+                
+                // Nettoyer les cœurs existants
+                container.innerHTML = '';
+                
+                // Créer de nouveaux cœurs
+                for (let i = 0; i < count; i++) {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '<i class="fas fa-heart"></i>';
+                    heart.classList.add('heart');
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    
+                    container.appendChild(heart);
+                }
+            }
+            
+            // Gestion de la connexion
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                
+                // Vérifier les identifiants
+                if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                    // Connexion réussie
+                    errorMessage.style.opacity = '0';
+                    errorMessage.textContent = '';
+                    
+                    // Créer une session admin
+                    const sessionToken = generateSessionToken();
+                    const sessionData = {
+                        username: username,
+                        token: sessionToken,
+                        timestamp: Date.now()
+                    };
+                    
+                    // Stocker la session
+                    localStorage.setItem('adminSession', JSON.stringify(sessionData));
+                    
+                    // Animation de succès
+                    const loginBtn = document.querySelector('.login-btn');
+                    loginBtn.innerHTML = '<i class="fas fa-check"></i> Connexion réussie !';
+                    loginBtn.style.background = 'linear-gradient(to right, #27ae60, #2ecc71)';
+                    
+                    // Redirection vers le dashboard après 1 seconde
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1000);
+                    
+                } else {
+                    // Identifiants incorrects
+                    errorMessage.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                    errorMessage.style.opacity = '1';
+                    
+                    // Animation d'erreur
+                    usernameInput.style.borderColor = '#e74c3c';
+                    passwordInput.style.borderColor = '#e74c3c';
+                    loginForm.style.animation = 'shake 0.5s';
+                    
+                    setTimeout(() => {
+                        loginForm.style.animation = '';
+                    }, 500);
+                    
+                    // Vider le champ mot de passe
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            });
+            
+            // Générer un token de session
+            function generateSessionToken() {
+                return 'admin_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
+            }
+            
+            // Vérifier si l'utilisateur est déjà connecté
+            checkAdminSession();
+            
+            function checkAdminSession() {
+                const sessionData = localStorage.getItem('adminSession');
+                
+                if (sessionData) {
+                    const session = JSON.parse(sessionData);
+                    const sessionAge = Date.now() - session.timestamp;
+                    const sessionMaxAge = 2 * 60 * 60 * 1000; // 2 heures
+                    
+                    // Si la session est encore valide, rediriger vers le dashboard
+                    if (sessionAge < sessionMaxAge) {
+                        // Rafraîchir le timestamp
+                        session.timestamp = Date.now();
+                        localStorage.setItem('adminSession', JSON.stringify(session));
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        // Session expirée, supprimer
+                        localStorage.removeItem('adminSession');
+                    }
+                }
+            }
+            
+            // Focus sur le champ username au chargement
+            usernameInput.focus();
+        });
+    </script>
+</body>
+</html>
