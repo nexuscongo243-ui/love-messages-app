@@ -186,3 +186,4 @@ Questions ou bug reports? Créez une issue dans le repository!
 ---
 
 **Créé avec ❤️ pour la Saint-Valentin 2026**
+# love-messages-app
